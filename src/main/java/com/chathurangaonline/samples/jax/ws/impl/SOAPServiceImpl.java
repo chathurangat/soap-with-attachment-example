@@ -34,7 +34,7 @@ public class SOAPServiceImpl implements SOAPService{
             } catch (IOException e) {
                 throw new WebServiceException("Upload Failed");
             }
-           return FILE_PATH + imageName;
+            return FILE_PATH + imageName;
         }
         throw new WebServiceException("No image data to upload.");
     }
@@ -43,6 +43,14 @@ public class SOAPServiceImpl implements SOAPService{
     @WebMethod
     public Image downloadImage(String imagePath) {
         logger.info(" == request for downloading the image on path [{}]== ",imagePath);
-        return null;
+        if (imagePath != null) {
+            try {
+                File imageFile = new File(imagePath);
+                return ImageIO.read(imageFile);
+            } catch (IOException e) {
+                throw new WebServiceException("No Image found in the path "+imagePath);
+            }
+        }
+        throw  new WebServiceException("Image Path is required");
     }
 }
